@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class OCLettingsSiteConfig(AppConfig):
+class OcLettingsSiteConfig(AppConfig):
     name = 'oc_lettings_site'

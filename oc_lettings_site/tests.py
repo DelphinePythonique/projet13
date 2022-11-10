@@ -1,2 +1,3 @@
-def test_dummy():
-    assert 1
+from django.test import TestCase
+
+# Create your tests here.

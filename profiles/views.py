@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Sed placerat quam in pulvinar commodo.
 # Nullam laoreet consectetur ex, sed consequat libero pulvinar eget. Fusc
 # faucibus, urna quis auctor pharetra, massa dolor cursus neque, quis dictum lacus d
-from .models import Profile2
+from .models import Profile
 
 
 def index(request):
@@ -18,6 +18,6 @@ def index(request):
 # it. Nam aliquam dignissim congue.
 # Pellentesque habitant morbi tristique senectus et netus et males
 def profile(request, username):
-    profile = Profile2.objects.get(user__username=username)
+    profile = Profile.objects.get(user__username=username)
     context = {'profile': profile}
     return render(request, 'profiles/profile.html', context)
