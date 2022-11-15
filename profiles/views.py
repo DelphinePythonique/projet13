@@ -7,7 +7,7 @@ from .models import Profile
 
 
 def index(request):
-    profiles_list = Profile2.objects.all()
+    profiles_list = Profile.objects.all()
     context = {'profiles_list': profiles_list}
     return render(request, 'profiles/index.html', context)
 

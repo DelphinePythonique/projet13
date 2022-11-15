@@ -34,6 +34,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('lettings', '0002_auto_20221105_1035'),
+
     ]
 
     operations = [

@@ -7,7 +7,9 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('profiles', '0003_auto_20221108_1146'),
+
     ]
+
 
     operations = [
         migrations.AlterModelTable(

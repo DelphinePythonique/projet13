@@ -35,6 +35,8 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('lettings', '0001_initial'),
+        ('oc_lettings_site', '0002_auto_20221105_1028'),
+
     ]
 
     operations = [

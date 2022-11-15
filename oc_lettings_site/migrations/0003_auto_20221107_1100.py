@@ -7,7 +7,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('oc_lettings_site', '0002_auto_20221105_1028'),
-    ]
+     ]
 
     operations = [
         migrations.DeleteModel('Profile'),
