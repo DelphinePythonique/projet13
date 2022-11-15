@@ -6,14 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('profiles', '0003_auto_20221108_1146'),
-
+        ("profiles", "0003_auto_20221108_1146"),
     ]
-
 
     operations = [
         migrations.AlterModelTable(
-            name='profile',
-            table='profiles_profile',
+            name="profile",
+            table="profiles_profile",
         ),
     ]
