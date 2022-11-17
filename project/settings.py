@@ -110,3 +110,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+INTERNAL_IPS = [
+ "*"
+]
+
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
