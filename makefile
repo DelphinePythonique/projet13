@@ -30,6 +30,10 @@ django-test:
 	python manage.py collectstatic --noinput --settings=${TEST_SETTINGS}
 	python manage.py test --settings=${TEST_SETTINGS}
 
+django-linter:
+	source .env && cd ${DJANGO_ROOT}
+	flake8 --exclude=env
+
 django-start:
 	source .env && cd ${DJANGO_ROOT}
 	python manage.py collectstatic --noinput --settings=${DEVELOPMENT_SETTINGS}
