@@ -1,7 +1,7 @@
 import pytest
 
 from django.urls import reverse
-from project.conftest import django_db_setup as my_django_db_setup # noqa
+from project13.project.conftest import django_db_setup as my_django_db_setup # noqa
 
 
 @pytest.mark.django_db

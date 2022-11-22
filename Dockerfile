@@ -9,9 +9,25 @@ WORKDIR $DockerHome
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN git clone https://github.com/DelphinePythonique/projet13 .
+# Install Python dependencies
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt \
+    && rm -rf /tmp/requirements.txt
 
-RUN pip install -r requirements.txt
+# Create dir and user
+RUN mkdir -p /home/app
+RUN addgroup --system app && adduser --system --group app
+
+# Setup app directory and variables
+ENV HOME=/home/app
+ENV APP_HOME=$HOME/web
+RUN mkdir $APP_HOME && mkdir -p $HOME/logs
+WORKDIR $APP_HOME
+
+# Copy project and allow our user to run it
+COPY ./project13 $APP_HOME
+RUN chown -R app:app $HOME
+USER app
 
 EXPOSE 8000
 
