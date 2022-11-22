@@ -43,6 +43,7 @@ jobs:
 
       - run:
           name: Run tests
+          working_directory: ./project13
           # This assumes pytest is installed via the install-package step above
           command: pytest
 
