@@ -36,12 +36,13 @@ jobs:
 
       - run:
           name: run Linters
-          command: make django-linter
+          working-directory: ~/project/project13
+          command: flake8
 
       - run:
           name: Run tests
           # This assumes pytest is installed via the install-package step above
-          command: make django-test
+          command: pytest
 
       - setup_remote_docker
 
