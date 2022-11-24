@@ -1,6 +1,5 @@
 import os
 
-import dj_database_url
 
 IS_HEROKU = "DYNO" in os.environ
 
@@ -100,11 +99,11 @@ USE_L10N = True
 USE_TZ = True
 
 DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "oc-lettings-site.sqlite3"),
-        }
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "oc-lettings-site.sqlite3"),
     }
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
