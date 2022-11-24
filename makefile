@@ -37,5 +37,9 @@ django-start:
 	python manage.py collectstatic --noinput
 	python manage.py runserver
 
+django-static:
+	source .env_development && cd ${DJANGO_ROOT}
+	python manage.py collectstatic --noinput
+
 docker-build:
 	docker build -t  local/oc-lettings .

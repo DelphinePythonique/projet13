@@ -1,5 +1,6 @@
 import os
 
+import django_heroku
 
 IS_HEROKU = "DYNO" in os.environ
 
@@ -11,16 +12,17 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
+
+# SECURITY WARNING: don't run with debug turned on in production!
+if IS_HEROKU:
+    DEBUG = False
+
+
 # Generally avoid wildcards(*). However since Heroku router provides hostname validation it is ok
 if IS_HEROKU:
     ALLOWED_HOSTS = ["*"]
 else:
     ALLOWED_HOSTS = []
-
-# SECURITY WARNING: don't run with debug turned on in production!
-if not IS_HEROKU:
-    DEBUG = True
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -109,4 +111,6 @@ DATABASES = {
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "static-files")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+django_heroku.settings(locals())
