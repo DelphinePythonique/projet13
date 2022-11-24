@@ -68,8 +68,6 @@ jobs:
       - attach_workspace:
           at: ~/project/project13
       - heroku/deploy-via-git:
-          pre-steps:
-            - run : cd ~/project/project13
           force: true # force push when pushing to the heroku remote, see: https://devcenter.heroku.com/articles/git
 
 # Invoke jobs via workflows
