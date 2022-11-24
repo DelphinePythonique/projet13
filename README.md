@@ -93,3 +93,6 @@ Créer et activer un container à partir de l'image uploadée
 docker  container run --env-file .env_variables_development -p [port de l\'hôte']:8000 -d delphinepythonique/oc-lettings:[tag]
 ```  
 
+
+git subtree push --prefix project13 https://git.heroku.com/oc-lettings-1974.git master
+
