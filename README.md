@@ -75,3 +75,21 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 
 - Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
 - Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
+
+### Docker
+
+##### Faire tourner l'application en local grace à docker
+
+Pre-requis; 
+Avoir installé docker 
+
+Récupérer une image présente sur le dockerhub, en remplacant [tag] par une version d'image
+```bash
+docker pull delphinepythonique/oc-lettings:[tag]
+```  
+
+Créer et activer un container à partir de l'image uploadée
+```bash
+docker  container run --env-file .env_variables_development -p [port de l\'hôte']:8000 -d delphinepythonique/oc-lettings:[tag]
+```  
+
