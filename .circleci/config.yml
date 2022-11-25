@@ -91,6 +91,6 @@ workflows:
       - containerize:
           requires:
             - build-and-test
-      - deploy
+      - deploy:
           requires:
             - containerize
