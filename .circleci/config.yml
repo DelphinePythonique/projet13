@@ -50,11 +50,7 @@ jobs:
             SECRET_KEY: $TEST_SECRET_KEY
           # This assumes pytest is installed via the install-package step above
           command: pytest
-
-
   containerize:
-    requires:
-      - build-and-test
     docker:
       - image: cimg/python:3.10.2
 
@@ -77,8 +73,6 @@ jobs:
             docker push $USERNAME_DOCKER_HUB_OPENCLASSROOMS/oc-lettings:$CIRCLE_SHA1
 
   deploy: # this can be any name you choose
-    requires:
-      - containerize
     executor: heroku/default # use the default executor defined within the orb
     steps:
       - checkout
@@ -94,4 +88,9 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build-and-test
+      - containerize:
+          requires:
+            - build-and-test
       - deploy
+          requires:
+            - containerize
