@@ -75,6 +75,15 @@ jobs:
             echo "$PASSWORD_DOCKER_HUB_OPENCLASSROOMS" | docker login -u "$USERNAME_DOCKER_HUB_OPENCLASSROOMS" --password-stdin
             docker build -t $USERNAME_DOCKER_HUB_OPENCLASSROOMS/oc-lettings:$CIRCLE_SHA1 .
             docker push $USERNAME_DOCKER_HUB_OPENCLASSROOMS/oc-lettings:$CIRCLE_SHA1
+      - run:
+          # Pushes the Docker image you created to the Docker Hub.
+          # Replace khabdrick/circleci-tutorial:v1 with the
+          # <docker_hub_username/docker-hub-password:version> you used to build the image above
+          name: Push to Docker Hub with lastest tag
+          command: |
+            echo "$PASSWORD_DOCKER_HUB_OPENCLASSROOMS" | docker login -u "$USERNAME_DOCKER_HUB_OPENCLASSROOMS" --password-stdin
+            docker build -t $USERNAME_DOCKER_HUB_OPENCLASSROOMS/oc-lettings:lastest .
+            docker push $USERNAME_DOCKER_HUB_OPENCLASSROOMS/oc-lettings:lastest
 
   deploy: # this can be any name you choose
     executor: heroku/default # use the default executor defined within the orb
