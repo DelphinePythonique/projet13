@@ -90,9 +90,16 @@ docker pull delphinepythonique/oc-lettings:[tag]
 
 Créer et activer un container à partir de l'image uploadée
 ```bash
-docker  container run --env-file .env_variables_development -p [port de l\'hôte']:8000 -d delphinepythonique/oc-lettings:[tag]
+docker  container run --env-file .env_variables_development -p [port de l\'hôte']:8000 -d delphinepythonique/oc-lettings:lastest
+```  
+
+ou utiliser la commande docker-compose: 
+pre-requis: docker compose est installé
+
+```bash
+docker-compose up
 ```  
 
 
-git subtree push --prefix project13 https://git.heroku.com/oc-lettings-1974.git master
+
 
