@@ -102,14 +102,14 @@ workflows:
     jobs:
       - build-and-test
       - containerize:
-          when:
-            and:
-              - equal: [ master, << pipeline.git.branch >> ]
+          filters:
+            branches:
+              only: master
           requires:
             - build-and-test
       - deploy:
-          when:
-            and:
-              - equal: [ master, << pipeline.git.branch >> ]
+          filters:
+            branches:
+              only: master
           requires:
             - containerize
