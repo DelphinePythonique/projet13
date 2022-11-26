@@ -1,5 +1,7 @@
 services:
   web:
+    env_file:
+      - .env_variables_development
     image: delphinepythonique/oc-lettings:lastest
     ports:
       - '8000:8000'
