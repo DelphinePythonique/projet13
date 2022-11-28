@@ -9,7 +9,7 @@ if IS_HEROKU:
     from sentry_sdk.integrations.django import DjangoIntegration
 
     sentry_sdk.init(
-        dsn="https://fdf158ec06a24d2080594c7e7f6ed368@o4504015125217280.ingest.sentry.io/4504230731186176", # noqa
+        dsn= os.environ["DSN_SENTRY"], # noqa
         integrations=[
             DjangoIntegration(),
         ],
