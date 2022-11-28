@@ -80,10 +80,10 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 
 ##### Faire tourner l'application en local grace à docker
 
-Pre-requis; 
+Prérequis; 
 Avoir installé docker 
 
-Récupérer une image présente sur le dockerhub, en remplacant [tag] par une version d'image
+Récupérer une image présente sur le dockerhub, en remplaçant [tag] par une version d'image
 ```bash
 docker pull delphinepythonique/oc-lettings:[tag]
 ```  
@@ -99,7 +99,48 @@ pre-requis: docker compose est installé
 ```bash
 docker-compose up
 ```  
-test workflow on other branch
+
+### Vue d'ensemble de l'architecture CI/CD
+
+Ce projet nécessite un compte sur le [docker hub](https://hub.docker.com/),
+[circleci](https://circleci.com/), [github](https://github.com/), [heroku](https://dashboard.heroku.com/apps)
+
+1 - Github héberge les sources.
+
+#### Configuration du dépot github
+##### Webhook vers circleci
+Via le dépot github **DelphinePyhonique / projet13**, **Settings > Webhooks**, un webhook a été ajouté pour que circleci soit notifié en cas de commit sur le dépot
 
 
+2 - l'application en lien avec ce projet a été créée sur HEROKU sous le nom de [oc-lettings-1974]
+#### Configuration de l'application pour HEROKU côté HEROKU
+Via Settings ajout des variables d'environnement : SECRET_KEY nécessaire à Django, DSN_SENTRY nécessaire à Sentry
 
+les fichiers Procfile et runtime.txt ont permis à HEROKU d'identifier la stack utile à l'application
+
+#### Configuration de l'application pour HEROKU (instance de production) côté Django
+
+Le fichier de settings.py des sources a été actualisé pour tenir compte de HEROKU notamment grâce aux instructions suivante
+
+```python 
+IS_HEROKU = "DYNO" in os.environ
+```
+
+Chaque instruction sous condition **if IS_HEROKU:** est utilisé pour HEROKU; notamment
+```python 
+if IS_HEROKU:
+    django_heroku.settings(locals())
+```
+Cette instruction permet de gérer correctement les fichiers statiques. 
+
+3. **Circleci** prend le relais de github, ses rôles sont de pousser le dockerfile du projet sur le dockerhub, et pousser
+les sources de l'application vers Heroku.
+
+Via circleci associer le compte circleci au compte github hébergeant le dépot à suivre. sélectionner le dépot à suivre. 
+
+#### Configuration du projet côté CIRCLE CI
+
+via Circleci > projets > projet13 > ... > Project Settings > Environment Variables, 
+les variables d'environnements suivantes sont à ajouter: 
+- Pour l'application sous Heroku: HEROKU_API_KEY, HEROKU_APP_NAME
+- Pour le transfer sur Docker Hub: PASSWORD_DOCKER_HUB_OPENCLASSROOMS, PASSWORD_DOCKER_HUB_OPENCLASSROOMS

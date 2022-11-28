@@ -9,7 +9,7 @@ if IS_HEROKU:
     from sentry_sdk.integrations.django import DjangoIntegration
 
     sentry_sdk.init(
-        dsn= os.environ["DSN_SENTRY"], # noqa
+        dsn=os.environ["DSN_SENTRY"],  # noqa
         integrations=[
             DjangoIntegration(),
         ],
@@ -131,4 +131,5 @@ DATABASES = {
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-django_heroku.settings(locals())
+if IS_HEROKU:
+    django_heroku.settings(locals())
