@@ -109,8 +109,9 @@ Ce projet nécessite un compte sur le [docker hub](https://hub.docker.com/),
 
 #### Configuration du dépot github
 ##### Webhook vers circleci
-Via le dépot github **DelphinePyhonique / projet13**, **Settings > Webhooks**, un webhook a été ajouté pour que circleci soit notifié en cas de commit sur le dépot
 
+Le fait de suivre un projet dans circleci entraine la création d'un webhook circleci au niveau du dépôt github
+Via le dépot github **DelphinePyhonique / projet13**, **Settings > Webhooks**, un webhook a été ajouté pour que circleci soit notifié en cas de commit sur le dépot
 
 2 - l'application en lien avec ce projet a été créée sur HEROKU sous le nom de [oc-lettings-1974]
 #### Configuration de l'application pour HEROKU côté HEROKU
@@ -144,4 +145,3 @@ via Circleci > projets > projet13 > ... > Project Settings > Environment Variabl
 les variables d'environnements suivantes sont à ajouter: 
 - Pour l'application sous Heroku: HEROKU_API_KEY, HEROKU_APP_NAME
 - Pour le transfer sur Docker Hub: PASSWORD_DOCKER_HUB_OPENCLASSROOMS, PASSWORD_DOCKER_HUB_OPENCLASSROOMS
-https://circleci.com/hooks/github
