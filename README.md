@@ -144,4 +144,4 @@ via Circleci > projets > projet13 > ... > Project Settings > Environment Variabl
 les variables d'environnements suivantes sont à ajouter: 
 - Pour l'application sous Heroku: HEROKU_API_KEY, HEROKU_APP_NAME
 - Pour le transfer sur Docker Hub: PASSWORD_DOCKER_HUB_OPENCLASSROOMS, PASSWORD_DOCKER_HUB_OPENCLASSROOMS
-test for circle-ci security issues 2
+test for circle-ci security issues 3
