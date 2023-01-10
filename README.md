@@ -113,7 +113,7 @@ Ce projet nécessite un compte sur le [docker hub](https://hub.docker.com/),
 Le fait de suivre un projet dans circleci entraine la création d'un webhook circleci au niveau du dépôt github
 Via le dépot github **DelphinePyhonique / projet13**, **Settings > Webhooks**, un webhook a été ajouté pour que circleci soit notifié en cas de commit sur le dépot
 
-2 - l'application en lien avec ce projet a été créée sur HEROKU sous le nom de [oc-lettings-1974]
+2 - l'application en lien avec ce projet a été créée sur HEROKU sous le nom de [oc-lettings-2023]
 #### Configuration de l'application pour HEROKU côté HEROKU
 Via Settings ajout des variables d'environnement : SECRET_KEY nécessaire à Django, DSN_SENTRY nécessaire à Sentry
 
