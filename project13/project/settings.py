@@ -131,4 +131,4 @@ STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 if IS_HEROKU:
-    django_heroku.settings(locals(), databases=False)
+    django_heroku.settings(locals(), databases=False, test_runner=False)
