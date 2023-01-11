@@ -1,7 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinLengthValidator
 from django.utils.translation import gettext_lazy as _
-import os
 
 
 # Create your models here.
