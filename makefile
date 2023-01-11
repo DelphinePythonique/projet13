@@ -23,6 +23,10 @@ django-migrate:
 	source .env_development && cd ${DJANGO_ROOT}
 	python manage.py migrate
 
+django-createsuperuser:
+	source .env_development && cd ${DJANGO_ROOT}
+	python manage.py createsuperuser
+
 django-test:
 	source .env_testing && cd ${DJANGO_ROOT}
 	python manage.py collectstatic --noinput

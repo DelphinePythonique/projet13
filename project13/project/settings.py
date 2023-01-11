@@ -2,6 +2,7 @@ import os
 
 import django_heroku
 
+
 IS_HEROKU = "DYNO" in os.environ
 
 if IS_HEROKU:
@@ -32,11 +33,13 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
 if IS_HEROKU:
     DEBUG = False
 
 
-# Generally avoid wildcards(*). However since Heroku router provides hostname validation it is ok
+# Generally avoid wildcards(*). However since Heroku router provides hostname
+# validation it is ok
 if IS_HEROKU:
     ALLOWED_HOSTS = ["*"]
 else:
@@ -90,18 +93,19 @@ WSGI_APPLICATION = "project.wsgi.application"
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+  {
+    "NAME":
+    "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+  },
+  {
+    "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+  },
+  {
+    "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+  },
+  {
+    "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+  },
 ]
 
 
@@ -131,4 +135,6 @@ STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 if IS_HEROKU:
-    django_heroku.settings(locals(), db_colors=False, databases=False, test_runner=False)
+    django_heroku.settings(
+        locals(), db_colors=False, databases=False, test_runner=False
+    )
