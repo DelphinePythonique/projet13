@@ -102,8 +102,12 @@ docker-compose up
 
 ### Vue d'ensemble de l'architecture CI/CD
 
-Ce projet nécessite un compte sur le [docker hub](https://hub.docker.com/),
-[circleci](https://circleci.com/), [github](https://github.com/), [heroku](https://dashboard.heroku.com/apps)
+Ce projet nécessite un compte sur 
+[docker hub](https://hub.docker.com/),
+[circleci](https://circleci.com/), 
+[github](https://github.com/), 
+[heroku](https://dashboard.heroku.com/apps), 
+[sentry](https://sentry.io/), 
 
 1 - Github héberge les sources.
 
@@ -114,10 +118,15 @@ Le fait de suivre un projet dans circleci entraine la création d'un webhook cir
 Via le dépot github **DelphinePyhonique / projet13**, **Settings > Webhooks**, un webhook a été ajouté pour que circleci soit notifié en cas de commit sur le dépot
 
 2 - l'application en lien avec ce projet a été créée sur HEROKU sous le nom de [oc-lettings-2023]
-#### Configuration de l'application pour HEROKU côté HEROKU
-Via Settings ajout des variables d'environnement : SECRET_KEY nécessaire à Django, DSN_SENTRY nécessaire à Sentry
+#### Configuration de l'application pour HEROKU côté HEROKU ( cela vaut en cas de suppression et restauration )
+Via Settings ajout des variables d'environnement : 
+  - SECRET_KEY nécessaire à Django, 
+  - DSN_SENTRY nécessaire à Sentry 
 
-les fichiers Procfile et runtime.txt ont permis à HEROKU d'identifier la stack utile à l'application
+Où trouver la valeur de DSN_SENTRY? 
+Via Sentry > Projects > [le projet] [la roue crantée en haut à droite]> clients keys DSN (dans le menu gauche), 
+
+les fichiers Procfile et runtime.txt présent dans le dépôt ont permis à HEROKU d'identifier la stack utile à l'application
 
 #### Configuration de l'application pour HEROKU (instance de production) côté Django
 
@@ -145,3 +154,11 @@ via Circleci > projets > projet13 > ... > Project Settings > Environment Variabl
 les variables d'environnements suivantes sont à ajouter: 
 - Pour l'application sous Heroku: HEROKU_API_KEY, HEROKU_APP_NAME
 - Pour le transfer sur Docker Hub: PASSWORD_DOCKER_HUB_OPENCLASSROOMS, PASSWORD_DOCKER_HUB_OPENCLASSROOMS
+
+4 - Comment restaurer une application supprimée sous HEROKU
+Côté Heroku: 
+ - Créer une nouvelle application dans Heroku
+ - Via settings, ajouter les variables d'environnement comme vu plus haut
+Côté CircleCI: 
+ - Se positionner sur la dernière pipeline ayant réussi  
+ - Cliquer sur la petite fleche en forme de cercle "rerun workflow from start"
