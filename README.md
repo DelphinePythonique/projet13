@@ -83,9 +83,9 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 Prérequis; 
 Avoir installé docker 
 
-Récupérer une image présente sur le dockerhub, en remplaçant [tag] par une version d'image
+Récupérer une image présente sur le dockerhub
 ```bash
-docker pull delphinepythonique/oc-lettings:[tag]
+docker pull delphinepythonique/oc-lettings:lastest
 ```  
 
 Créer et activer un container à partir de l'image uploadée
@@ -102,34 +102,31 @@ docker-compose up
 
 ### Vue d'ensemble de l'architecture CI/CD
 
-Ce projet nécessite un compte sur 
+Ce projet nécessite d'avoir accès à
 [docker hub](https://hub.docker.com/),
 [circleci](https://circleci.com/), 
 [github](https://github.com/), 
 [heroku](https://dashboard.heroku.com/apps), 
 [sentry](https://sentry.io/), 
 
-1 - Github héberge les sources.
+![vue d'ensemble CI/CD](./images/vue_ensemble_CI_CD.png "Vue d'ensemble CI/CD").
 
-#### Configuration du dépot github
-##### Webhook vers circleci
+#### Configuration du déploiement
 
-Le fait de suivre un projet dans circleci entraine la création d'un webhook circleci au niveau du dépôt github
-Via le dépot github **DelphinePyhonique / projet13**, **Settings > Webhooks**, un webhook a été ajouté pour que circleci soit notifié en cas de commit sur le dépot
+##### Sentry
+- S'authentifier au niveau de l'url https://sentry.io/
+- Cliquer sur Create Project
+- Sélectionner la platform Django
+- Paramétrer vos alertes
+- Saisir le nom de votre projet à surveiller dans Sentry (dans le cadre de ce projet)
+- Suivre les instructions *configure django*
+- remplacer la valeur du dsn par la variable "DSN_SENTRY" (voir le settings.py du projet sous github)
+cette variable sera reprise comme variable d'environnement dans Heroku
+Dans Sentry, elle sera accéssible via Sentry > Projects > [le projet] [la roue crantée en haut à droite]> clients keys DSN (dans le menu gauche), 
 
-2 - l'application en lien avec ce projet a été créée sur HEROKU sous le nom de [oc-lettings-2023]
-#### Configuration de l'application pour HEROKU côté HEROKU ( cela vaut en cas de suppression et restauration )
-Via Settings ajout des variables d'environnement : 
-  - SECRET_KEY nécessaire à Django, 
-  - DSN_SENTRY nécessaire à Sentry 
+##### Heroku, 
 
-Où trouver la valeur de DSN_SENTRY? 
-Via Sentry > Projects > [le projet] [la roue crantée en haut à droite]> clients keys DSN (dans le menu gauche), 
-
-les fichiers Procfile et runtime.txt présent dans le dépôt ont permis à HEROKU d'identifier la stack utile à l'application
-
-#### Configuration de l'application pour HEROKU (instance de production) côté Django
-
+###### Préparation du fichier settings.py du projet pour un usage de Heroku
 Le fichier de settings.py des sources a été actualisé pour tenir compte de HEROKU notamment grâce aux instructions suivante
 
 ```python 
@@ -139,26 +136,80 @@ IS_HEROKU = "DYNO" in os.environ
 Chaque instruction sous condition **if IS_HEROKU:** est utilisé pour HEROKU; notamment
 ```python 
 if IS_HEROKU:
-    django_heroku.settings(locals())
+    django_heroku.settings(
+        locals(), db_colors=False, databases=False, test_runner=False
+    )
 ```
-Cette instruction permet de gérer correctement les fichiers statiques. 
+Cette instruction permet de gérer correctement les fichiers statiques.
 
-3. **Circleci** prend le relais de github, ses rôles sont de pousser le dockerfile du projet sur le dockerhub, et pousser
-les sources de l'application vers Heroku.
+nota: Le paramètre databases=False empêche une erreur lors du déploiement dûe au fait que 
+*django_heroku* entraine la prise en charge d'une base postgresql sans que celle ci soit configurée ; 
+dans le contexte de ce projet SQLITE est utilisée. 
 
-Via circleci associer le compte circleci au compte github hébergeant le dépot à suivre. sélectionner le dépot à suivre. 
 
-#### Configuration du projet côté CIRCLE CI
+###### Configuration Heroku
+Installation
+- Accéder à l'url https://dashboard.heroku.com/apps
+- cliquer sur le bouton New en haut à droite
+- Renseigner les informations demandées puis cliquer sur *Create app*
+dans le cadre de ce projet, le nom de l'application est oc-lettings-2023
+- Cliquer sur le projet puis Settings 
+- Au niveau du groupe Config Vars, ajouter les variables suivantes : 
 
-via Circleci > projets > projet13 > ... > Project Settings > Environment Variables, 
-les variables d'environnements suivantes sont à ajouter: 
-- Pour l'application sous Heroku: HEROKU_API_KEY, HEROKU_APP_NAME
-- Pour le transfer sur Docker Hub: PASSWORD_DOCKER_HUB_OPENCLASSROOMS, PASSWORD_DOCKER_HUB_OPENCLASSROOMS
+  - DSN_SENTRY: générée lors de la création du projet dans Sentry voir configuration de Sentry
+  - SECRET_KEY: Clé secrete du projet Django; reprendre le nom de variable utilisé dans le fichier Settings.py de Django
 
-4 - Comment restaurer une application supprimée sous HEROKU
-Côté Heroku: 
- - Créer une nouvelle application dans Heroku
- - Via settings, ajouter les variables d'environnement comme vu plus haut
+Récupération de la clé d'API 
+- Cliquer sur l'avatar de votre profil 
+- Cliquer sur *Account Settings*
+- Au niveau du groupe API key cliquer sur *generate API Key*
+cette clé sera reprise dans les variables d'environnement de CircleCI
+
+Au niveau du dépôt github dans le répertoire project13, les fichiers Procfile et runtime.txt sont utilisés lors du déploiement dans Heroku.
+
+Via CircleCI, 
+
+- Accéder à l'url https://circleci.com/
+- Au niveau du bouton "Log In With Github", cliquer sur la *flèche* descendante
+- Cliquer sur "Public Repo Only"
+- Sélectionner l'organisation contenant le dépot
+la liste des dépôts de l'organisation s'affiche
+- Repérer la ligne du dépôt dont vous souhaitez paramétrer la CI/CD
+- Cliquer sur le bouton "Set Up Project"
+Cela a pour effet d'ajouter un webhook au niveau de votre projet github, visible via Github > [votre dépot] ( ici DelphinePythonique/projet13) >Settings > Webhooks
+- Sélectionner l'option *Fastest*: Use the .circleci/config.yml
+Le fichier *.circleci/config* correspond au fichier présent dans votre dépôt github
+Ce fichier décrit la suite d'instruction à exécuter par le pipeline de CircleCI
+par la suite vous pourrez constater sa prise en compte en cliquant sur "..." au niveau du projet dans CircleCI > Configuration File
+- Cliquer sur "..." au niveau du projet dans CircleCI
+- Cliquer sur Project Settings
+- Au niveau du menu gauche, cliquer sur Environment Variables
+- Ajouter les variables d'environnement suivantes : 
+  - HEROKU_API_KEY: cet clé correspond à la clé générée plus haut paragraphe configuration Heroku
+  - HEROKU_APP_NAME : nom de votre application dans Heroku
+  - PASSWORD_DOCKER_HUB_OPENCLASSROOMS: votre mot de passe Docker Hub
+  - USERNAME_DOCKER_HUB_OPENCLASSROOMS: votre identifiant Docker Hub
+Ces différentes variables sont utilisées dans le fichier .circleci/config.yml; respectivement pour le déploiement sur Heroku et le "push" de l'image sur le Docker Hub
+
+#### Déployer  
+
+- Pousser une modification sur la branche *master* du dépôt github.
+CircleCi est notifié. Au niveau du fichier de configuration circleci > clé workflows, nous constatons que
+les déploiements se font uniquement lors de poussé sur la branche master
+```yml 
+ - deploy:
+          filters:
+            branches:
+              only: master
+```
+Une nouvelle pipeline est générée 
+
+![Pipeline CI/CD](./images/pipeline_circleci.png "Pipeline CircleCi").
+
+#### restaurer une application supprimée sous HEROKU
+##### Heroku: 
+ - Créer une nouvelle application dans Heroku (cf. Configuration Heroku > installation )
+
 Côté CircleCI: 
  - Se positionner sur la dernière pipeline ayant réussi  
  - Cliquer sur la petite fleche en forme de cercle "rerun workflow from start"
