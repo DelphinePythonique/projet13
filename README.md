@@ -206,10 +206,10 @@ Une nouvelle pipeline est générée
 
 ![Pipeline CI/CD](./images/pipeline_circleci.png "Pipeline CircleCi").
 
-#### restaurer une application supprimée sous HEROKU
+#### Restaurer une application supprimée sous HEROKU
 ##### Heroku: 
  - Créer une nouvelle application dans Heroku (cf. Configuration Heroku > installation )
 
-Côté CircleCI: 
+##### CircleCI: 
  - Se positionner sur la dernière pipeline ayant réussi  
  - Cliquer sur la petite fleche en forme de cercle "rerun workflow from start"
